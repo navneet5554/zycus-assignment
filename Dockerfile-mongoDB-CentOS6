@@ -1,0 +1,24 @@
+####Installation of MongoDB server in CentOS6####
+
+# We select the base image so as mentioned we need to work on CentOS 6 where FROM refer select 
+FROM centos:centos6   
+
+# we run yum update command for updating the packages and where "-y" syntax represent yes.
+RUN yum -y update; yum clean all
+
+# Install EPEL repo package using below command
+RUN yum -y install epel-release
+
+# Install mongodb server, in assignment it's mentioned to install any version of mongodb.
+RUN yum -y install mongodb-server
+
+#Create data directory for mongodb
+RUN mkdir -p /data/db
+
+#To set the port for mongodb
+EXPOSE 27017
+
+#configure the container to run as an executable
+ENTRYPOINT ["/usr/bin/mongod"]
+
+
