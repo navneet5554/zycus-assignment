@@ -1,0 +1,19 @@
+We will follow below steps for migration the mentioned java application stack and i am considering a AWS environment.
+
+Step-1 :- We will create instances according to attached diagram, where we have used HA setup( ELB with two web servers at backend and MongoDB (master-slave setup).
+Note : We can also create MongoDB server in Mongo Cloud.
+ 
+Step-2 :- Install all packages which we have in the previous instance from where we are planning for migration, e.g Apache, tomcat, ActiveMQ, Oracle). All packages should be the same version.
+
+Step-3 :- Setup an ELB server with define backend web servers over it.
+
+Step-4 :- We will sync all data into new webservers using rsync tool with define limited bandwidth and also define priority using NICE command.
+
+Step-5 :- There be two-way for migrating database
+
+(a) If a database is not large then we will take a dump and restore over the new instance.
+(b) Otherwise, we will we take a downtime and stop the database and sync it.
+
+Steps-6 : We need to setup a connection between web server and database.
+
+
