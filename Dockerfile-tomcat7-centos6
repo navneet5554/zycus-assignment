@@ -1,0 +1,39 @@
+#######Installation of Apache Tomcat 7########## 
+
+# We select the base image so as mentioned we need to work on CentOS 6 where FROM refer select
+FROM centos:centos6
+ 
+#Installation WGET and tar
+RUN yum install -y wget; yum install -y tar
+
+#firstly we need install java and for same we follow below steps where we will download tar file and extract it
+RUN cd /opt;wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/7u55-b13/jdk-7u55-linux-x64.tar.gz; pwd 
+
+RUN cd /opt;tar xvf jdk-7u55-linux-x64.tar.gz
+
+RUN alternatives --install /usr/bin/java java /opt/jdk1.7.55/bin/java 2
+ 
+#Download Tomcat 7 
+RUN cd /tmp;wget http://apache.mirrors.pair.com/tomcat/tomcat-7/v7.0.61/bin/apache-tomcat-7.0.61.tar.gz 
+
+
+#untar and move to proper location
+RUN cd /tmp;tar xvf apache-tomcat-7.0.61.tar.gz
+ 
+RUN cd /tmp;mv apache-tomcat-7.0.61 /opt/tomcat7
+ 
+RUN chmod -R 755 /opt/tomcat7
+
+# To set enviroment variable
+ENV JAVA_HOME /opt/jdk1.7.0_55
+
+#Create tomcat user because we should run tomcat from tomcat user.
+RUN groupadd -r tomcat && \ useradd -g tomcat -d ${CATALINA_HOME} -s /sbin/nologin  -c "Tomcat user" tomcat && \  chown -R tomcat:tomcat ${CATALINA_HOME}
+
+
+#To set the port for Tomcat
+EXPOSE 8080
+ 
+#The default execution command for run tomcat script where we have mentioned start/stop/restart command.
+CMD /opt/tomcat7/bin/catalina.sh run
+
